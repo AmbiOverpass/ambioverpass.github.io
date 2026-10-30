@@ -7,29 +7,26 @@
 <title>AmbiOverpass</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Noto+Sans:wght@400;500;700&display=swap">
 <style>
-@font-face{font-family:"HarmonyOS Sans";src:url("fonts/HarmonyOS_Sans_Regular.ttf") format("truetype");font-weight:400;font-style:normal;font-display:swap}
-@font-face{font-family:"HarmonyOS Sans";src:url("fonts/HarmonyOS_Sans_Medium.ttf") format("truetype");font-weight:500;font-style:normal;font-display:swap}
-@font-face{font-family:"HarmonyOS Sans";src:url("fonts/HarmonyOS_Sans_Bold.ttf") format("truetype");font-weight:600 700;font-style:normal;font-display:swap}
 :root{
   --ink:#141413;
-  --ivory:#FAF9F5;
-  --oat:#F0EEE6;
-  --sunken:#F5F4ED;
-  --warm-line:#E8E6DC;
+  --ivory:#FFFFFF;
+  --oat:#EEF3FD;
+  --sunken:#F6F7F9;
+  --warm-line:#E6E8EC;
   --line:rgba(31,30,29,.10);
   --brand:#2557C7;
   --brand-hover:#1B449E;
   --coral:#4A78DA;
   --tint:rgba(74,120,218,.09);
-  --serif:"Source Serif 4",Georgia,"Times New Roman",serif;
-  --body:"HarmonyOS Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --serif:"Google Sans","Noto Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --body:"Noto Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
   --mono:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
   --r-lg:16px; --r-md:12px;
   --card-shadow:0 1px 2px rgba(31,30,29,.04),0 10px 28px -16px rgba(31,30,29,.16);
   --card-shadow-hi:0 2px 4px rgba(31,30,29,.05),0 18px 36px -18px rgba(31,30,29,.24);
-  --frost:rgba(250,249,245,.86);
+  --frost:rgba(255,255,255,.86);
 }
 *,*::before,*::after{box-sizing:border-box}
 html{scroll-behavior:smooth;scroll-padding-top:72px;overflow-x:hidden}
@@ -45,8 +42,8 @@ button{font:inherit;color:inherit}
 
 /* Header */
 .hero{padding:5.5rem 0 2.5rem;text-align:center}
-.title{max-width:60rem;margin:0 auto;font-family:var(--serif);font-size:clamp(2rem,4.4vw,3.3rem);font-weight:500;line-height:1.16;letter-spacing:-.01em;text-wrap:balance}
-.wordmark{font-weight:600;color:var(--brand)}
+.title{max-width:62rem;margin:0 auto;font-family:var(--serif);font-size:clamp(1.9rem,4vw,3rem);font-weight:500;line-height:1.16;letter-spacing:-.02em;text-wrap:balance}
+.wordmark{font-weight:700;color:var(--brand)}
 .authors{margin-top:1.9rem;font-size:1.2rem}
 .venue{margin-top:1rem;font-family:var(--serif);font-size:1.15rem;font-weight:600}
 .links{display:flex;flex-wrap:wrap;justify-content:center;gap:.8rem;margin-top:2rem}
@@ -96,7 +93,7 @@ button{font:inherit;color:inherit}
 
 /* Sections */
 .section{padding:2.5rem 0}
-.section h2{margin-bottom:1.25rem;font-family:var(--serif);font-size:1.9rem;font-weight:500;line-height:1.25;text-align:center}
+.section h2{margin-bottom:1.25rem;font-family:var(--serif);font-size:1.875rem;font-weight:700;letter-spacing:-.012em;line-height:1.25;text-align:center}
 .section p.text{font-size:1rem;line-height:1.8;text-align:left}
 
 /* Gallery */
@@ -122,14 +119,14 @@ button{font:inherit;color:inherit}
 .rvrange{position:absolute;inset:0;z-index:3;width:100%;height:100%;margin:0;opacity:0;cursor:ew-resize}
 
 /* Table */
-.table-wrap{overflow-x:auto;padding:.4rem 1rem;border:1px solid var(--warm-line);border-radius:var(--r-lg);background:#fff;box-shadow:var(--card-shadow)}
+.table-wrap{overflow-x:auto}
 table{width:100%;border-collapse:collapse;font-size:.94rem;font-variant-numeric:tabular-nums;white-space:nowrap}
 th,td{padding:.6rem .75rem;text-align:center;border-bottom:1px solid var(--warm-line)}
 th:first-child,td:first-child{text-align:left}
-thead th{font-weight:700}
+thead th{font-family:var(--serif);font-weight:700;border-bottom:2px solid #DBDBDB}
 tbody tr:last-child td{border-bottom:0}
 th.grp,td.grp{border-left:1px solid var(--warm-line)}
-tbody tr.ours td{background:var(--tint);font-weight:700}
+tbody tr.ours td{background:#EEF3FD;font-weight:700}
 tbody tr.ours td:first-child span{color:var(--brand)}
 td.b{font-weight:700}
 .table-note{margin-top:.85rem;font-size:.88rem;line-height:1.6;text-align:left}
@@ -142,7 +139,9 @@ td.b{font-weight:700}
 .figure.narrow .slot img{max-width:640px;margin-inline:auto}
 .figure .empty{border-radius:8px}
 .figure-caption{margin-top:.85rem;font-size:.9rem;line-height:1.6;text-align:left}
-.split{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:2rem;align-items:center}
+.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:2.5rem;align-items:center}
+.split h2{text-align:left!important}
+.split .figure{padding:1rem}
 @media (max-width:860px){.split{grid-template-columns:1fr}}
 
 pre{margin:0;padding:1.25rem 1.5rem;overflow-x:auto;border-radius:var(--r-md);background:var(--sunken);border:1px solid var(--warm-line);font:400 .85rem/1.6 var(--mono);text-align:left}
@@ -161,13 +160,13 @@ footer .meta{margin-top:.35rem;font-size:.82rem}
 .pnav a.on b{transform:scale(1.45)}
 .pnav a.on b::after{content:"";position:absolute;inset:0;border-radius:50%;background:var(--coral);animation:breathe 2.4s ease-in-out infinite}
 @keyframes breathe{0%{transform:scale(1);opacity:.55}70%,100%{transform:scale(3.2);opacity:0}}
-.pnav a span{padding:.15rem .45rem;border-radius:.3rem;background:rgba(250,249,245,.95);font-size:.75rem;white-space:nowrap;opacity:0;transform:translateX(-4px);pointer-events:none;transition:opacity .2s ease,transform .2s ease}
+.pnav a span{padding:.15rem .45rem;border-radius:.3rem;background:rgba(255,255,255,.95);font-size:.75rem;white-space:nowrap;opacity:0;transform:translateX(-4px);pointer-events:none;transition:opacity .2s ease,transform .2s ease}
 .pnav:hover a span,.pnav.active a span{opacity:1;transform:none;pointer-events:auto}
 .pnav a:hover b{transform:scale(1.45)}
 .pnav a.on span{opacity:1;transform:none;font-weight:700}
 
 /* Top bar */
-.topbar{position:fixed;top:0;left:0;right:0;z-index:40;background:rgba(250,249,245,.88);-webkit-backdrop-filter:saturate(160%) blur(14px);backdrop-filter:saturate(160%) blur(14px);border-bottom:1px solid var(--warm-line);transform:translateY(-100%);transition:transform .3s ease}
+.topbar{position:fixed;top:0;left:0;right:0;z-index:40;background:rgba(255,255,255,.88);-webkit-backdrop-filter:saturate(160%) blur(14px);backdrop-filter:saturate(160%) blur(14px);border-bottom:1px solid var(--warm-line);transform:translateY(-100%);transition:transform .3s ease}
 .topbar.show{transform:none}
 .topbar .container{display:flex;align-items:center;gap:1.5rem;height:56px}
 .topbar .brand{flex:none;font-family:var(--serif);font-size:1.2rem;font-weight:600;color:var(--brand);text-decoration:none}
@@ -180,11 +179,11 @@ footer .meta{margin-top:.35rem;font-size:.82rem}
 @media (max-width:860px){.topbar nav{display:none}.topbar .btn{margin-left:auto}}
 
 /* Key numbers */
-.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin-top:2rem;border:1px solid var(--warm-line);border-radius:var(--r-lg);background:#fff;box-shadow:var(--card-shadow)}
-.stat{padding:1.4rem 1.2rem;text-align:center}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));max-width:880px;margin:2.5rem auto 0;border:1px solid var(--warm-line);border-radius:var(--r-lg);background:#fff;box-shadow:var(--card-shadow)}
+.stat{padding:1rem .9rem;text-align:center}
 .stat + .stat{border-left:1px solid var(--warm-line)}
-.stat b{display:block;font-family:var(--serif);font-size:2.4rem;font-weight:600;line-height:1.1;font-variant-numeric:tabular-nums;color:var(--brand)}
-.stat span{display:block;margin-top:.35rem;font-size:.88rem}
+.stat b{display:block;font-family:var(--serif);font-size:1.7rem;font-weight:600;line-height:1.1;font-variant-numeric:tabular-nums;color:var(--brand)}
+.stat span{display:block;margin-top:.3rem;font-size:.82rem;line-height:1.4}
 @media (max-width:700px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.stat:nth-child(3){border-left:0}.stat:nth-child(n+3){border-top:1px solid var(--warm-line)}}
 
 @media (hover:hover){
@@ -223,15 +222,16 @@ footer .meta{margin-top:.35rem;font-size:.82rem}
   </div>
 </div></header>
 
-<section class="section" id="overview" data-nav="Overview" style="padding-top:1.5rem"><div class="container">
-  <div class="figure"><div class="slot"><img class="mid" src="assets/fig_motivation.png" alt="Clarification of an ambiguous Text-to-OverpassQL request"></div></div>
-  <p class="figure-caption"><span class="fig-no">Figure 1.</span> Clarification of an ambiguous request with 32 candidate queries over the area, tag and element-type choices. Guessing one query may miss the intended objects, and asking about every ambiguity spends questions on queries that return the same objects. AmbiOverpass executes all candidates, merges the 13 non-empty interpretations into 9 result classes and asks questions that separate result classes.</p>
+<section class="section" id="overview" data-nav="Overview" style="padding-top:0"><div class="container">
   <div class="stats" id="stats"></div>
 </div></section>
 
 <section class="section" id="motivation" data-nav="Motivation"><div class="container">
-  <h2>Many Queries, Few Different Answers</h2>
-  <p class="text">Real requests to OpenStreetMap often leave the area, the object tag, the element type or the spatial constraints open, so one request maps to many executable OverpassQL queries. Many of these queries return empty or identical results, and the ambiguity that matters for the answer is much smaller than the ambiguity of the request text. Existing clarification methods value a question by the interpretations it separates and by its immediate benefit. They spend questions on distinctions with the same result and stop before questions that are useful together are asked. AmbiOverpass executes all candidate queries with one shared database query per candidate area and landmark kind, merges queries with identical results into the result classes of an ambiguity topology, credits each question with its exact Shapley value over the ambiguity slots, and plans with a look-ahead over the Shapley-greedy continuation.</p>
+  <div class="split">
+    <figure><div class="figure"><div class="slot"><img src="assets/fig_motivation.png" alt="Clarification of an ambiguous Text-to-OverpassQL request"></div></div>
+    <p class="figure-caption"><span class="fig-no">Figure 1.</span> Guessing one query, asking every ambiguity and AmbiOverpass on a request with 32 candidate queries, of which 13 return objects in 9 result classes.</p></figure>
+    <div><h2>Many Queries, Few Different Answers</h2><p class="text">Real requests to OpenStreetMap often leave the area, the object tag, the element type or the spatial constraints open, so one request maps to many executable OverpassQL queries. Many of these queries return empty or identical results, and the ambiguity that matters for the answer is much smaller than the ambiguity of the request text. Existing clarification methods value a question by the interpretations it separates and by its immediate benefit. They spend questions on distinctions with the same result and stop before questions that are useful together are asked. AmbiOverpass executes all candidate queries with one shared database query per candidate area and landmark kind, merges queries with identical results into the result classes of an ambiguity topology, credits each question with its exact Shapley value over the ambiguity slots, and plans with a look-ahead over the Shapley-greedy continuation.</p></div>
+  </div>
 </div></section>
 
 <section class="section" id="benchmark" data-nav="Benchmark"><div class="container">
@@ -309,9 +309,9 @@ const RESULTS = [
 
 const CASES = [
   {label: 'Clarification dialogue', src: 'assets/fig_case.png',
-   caption: 'Clarification of the two-landmark test request “What are all the fire hydrants near a park and close to a grocery store in Lons-le-Saunier?” (220 non-empty interpretations in 98 result classes, six hydrants in the intended result) by topology greedy, asking every ambiguity and AmbiOverpass, without a question budget. The question with the red dashed border is asked after the result is already determined. For AmbiOverpass, each answer is followed by the number of remaining result classes and the probability that submitting the most probable class is correct.'},
+   caption: 'Clarification of a two-landmark request with 98 result classes by topology greedy, asking every ambiguity and AmbiOverpass.'},
   {label: 'Candidate generation', src: 'assets/fig_rewrite_case.png',
-   caption: 'Candidate generation for a request of the rewriting subset. One-shot listing asks one LLM call for 50 tags for the vague request, while the rewrite operations of AmbiOverpass turn the vague request into four precise requests, each aligned to ten OSM tags. Struck-out tags are carried by no OSM object and are removed by the tag statistics.'}
+   caption: 'Candidate generation by one-shot tag listing and by the rewrite operations of AmbiOverpass, with tags carried by no OSM object struck out.'}
 ];
 
 const COST = {
