@@ -158,6 +158,24 @@ td.b{font-weight:700}
 .hl-name{display:flex;align-items:center;flex-wrap:wrap}
 .hl-head{width:1.05rem;height:1.05rem;margin-right:.45rem;fill:none;stroke:var(--brand);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 @media (max-width:760px){.hl-row{grid-template-columns:9.5rem minmax(0,1fr) 2.8rem!important}}
+.stats.hl-wrap{display:grid;grid-template-columns:15.5rem minmax(0,1fr) 15.5rem;gap:1.8rem;max-width:none;padding:1.5rem 1.6rem}
+.hl-mid .hl-grid{grid-template-columns:1fr;gap:1.4rem}
+.hl-mid{padding:0 1.8rem;border-left:1px solid var(--warm-line);border-right:1px solid var(--warm-line)}
+.hl-side-title{margin-bottom:.8rem;font-family:var(--serif);font-size:1.05rem;font-weight:700}
+.hl-req{font-size:.92rem;line-height:1.75}
+.hl-req mark{padding:0 .1rem;background:transparent;color:inherit;box-shadow:inset 0 -.42em 0 color-mix(in srgb,var(--c) 22%,#fff)}
+.hl-slots{margin:1rem 0 0;padding:0;list-style:none;display:grid;gap:.55rem}
+.hl-slots li{padding-left:.7rem;border-left:3px solid var(--c);font-size:.8rem;line-height:1.4}
+.hl-slots b{display:block;font-size:.86rem}
+.hl-sum{margin-top:1rem;font-size:.84rem;line-height:1.5}
+.hl-sum b{font-family:var(--serif);font-size:1.15rem;color:var(--brand)}
+.hl-sum.ok{font-weight:700;color:var(--brand)}
+.hl-dialog{margin:0;padding:0;list-style:none;counter-reset:q;display:grid;gap:.45rem}
+.hl-dialog li{counter-increment:q;display:grid;grid-template-columns:1.5rem minmax(0,1fr) auto;align-items:center;gap:.5rem;padding:.4rem .55rem;border-radius:8px;background:var(--oat);font-size:.84rem}
+.hl-dialog li::before{content:"Q" counter(q);font-weight:700;color:var(--brand);font-size:.76rem}
+.hl-dialog b{min-width:1.9rem;padding:.05rem .4rem;border-radius:6px;background:#fff;text-align:center;font-variant-numeric:tabular-nums;color:var(--brand)}
+.hl-note{margin-top:.5rem;font-size:.75rem}
+@media (max-width:1080px){.stats.hl-wrap{grid-template-columns:1fr}.hl-mid{padding:1.4rem 0;border:0;border-top:1px solid var(--warm-line);border-bottom:1px solid var(--warm-line)}}
 pre{margin:0;padding:1.25rem 1.5rem;overflow-x:auto;border-radius:var(--r-md);background:var(--sunken);border:1px solid var(--warm-line);font:400 .85rem/1.6 var(--mono);text-align:left}
 footer{padding:2.5rem 0 3rem;border-top:1px solid var(--warm-line);font-size:.9rem;text-align:center}
 footer .meta{margin-top:.35rem;font-size:.82rem}
@@ -243,7 +261,34 @@ footer .meta{margin-top:.35rem;font-size:.82rem}
 </div></header>
 
 <section class="section" id="overview" data-nav="Overview" style="padding-top:0"><div class="container">
-  <div class="stats" id="stats"></div>
+  <div class="stats hl-wrap">
+    <aside class="hl-side">
+      <p class="hl-side-title">Where the ambiguity comes from</p>
+      <p class="hl-req">&ldquo;All the <mark style="--c:#D97706">fire hydrants</mark> <mark style="--c:#0E9384">near a park</mark> and <mark style="--c:#8B5CF6">close to a grocery store</mark> in <mark style="--c:#2E90FA">Lons-le-Saunier</mark>?&rdquo;</p>
+      <ul class="hl-slots">
+        <li style="--c:#2E90FA"><b>Area</b>three OSM areas share the name</li>
+        <li style="--c:#D97706"><b>Hydrant tag</b>which OSM tag marks a hydrant</li>
+        <li style="--c:#0E9384"><b>Park tag, radius</b>park or recreation ground; 100, 200 or 500 m</li>
+        <li style="--c:#8B5CF6"><b>Grocery tag, radius</b>supermarket or convenience; 100, 200 or 500 m</li>
+        <li style="--c:#6B7280"><b>Element type</b>point, line or area</li>
+      </ul>
+      <p class="hl-sum"><b>220</b> readings, only <b>98</b> different results</p>
+    </aside>
+    <div class="hl-mid" id="stats"></div>
+    <aside class="hl-side">
+      <p class="hl-side-title">How AmbiOverpass asks</p>
+      <ol class="hl-dialog">
+        <li><span>Which park?</span><b>28</b></li>
+        <li><span>Which grocery store?</span><b>12</b></li>
+        <li><span>How close to the store?</span><b>3</b></li>
+        <li><span>How close to the park?</span><b>2</b></li>
+        <li><span>Which Lons-le-Saunier?</span><b>1</b></li>
+      </ol>
+      <p class="hl-note">Number: results still possible after the answer, from 98.</p>
+      <p class="hl-sum ok">&#10003; The 6 intended hydrants, five questions</p>
+      <p class="hl-sum">Hydrant tag and element type are never asked, since they do not change the result. Guessing at once returns 185 hydrants, 179 of them wrong.</p>
+    </aside>
+  </div>
 </div></section>
 
 <section class="section" id="abstract" data-nav="Abstract"><div class="container">
