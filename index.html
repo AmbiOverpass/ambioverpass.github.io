@@ -186,12 +186,18 @@ footer .meta{margin-top:.35rem;font-size:.82rem}
 @media (max-width:860px){.topbar nav{display:none}.topbar .btn{margin-left:auto}}
 
 /* Key numbers */
-.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));max-width:880px;margin:2.5rem auto 0;border:1px solid var(--warm-line);border-radius:var(--r-lg);background:#fff;box-shadow:var(--card-shadow)}
-.stat{padding:1rem .9rem;text-align:center}
-.stat + .stat{border-left:1px solid var(--warm-line)}
-.stat b{display:block;font-family:var(--serif);font-size:1.7rem;font-weight:600;line-height:1.1;font-variant-numeric:tabular-nums;color:var(--brand)}
-.stat span{display:block;margin-top:.3rem;font-size:.82rem;line-height:1.4}
-@media (max-width:700px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.stat:nth-child(3){border-left:0}.stat:nth-child(n+3){border-top:1px solid var(--warm-line)}}
+.stats{max-width:980px;margin:2.5rem auto 0;padding:1.4rem 1.6rem 1.5rem;border:1px solid var(--warm-line);border-radius:var(--r-lg);background:#fff;box-shadow:var(--card-shadow)}
+.hl-title{margin-bottom:1rem;font-family:var(--serif);font-size:1.05rem;font-weight:700;text-align:center}
+.hl-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2.5rem}
+.hl-name{margin-bottom:.6rem;font-family:var(--serif);font-size:.95rem;font-weight:700}
+.hl-name span{margin-left:.5rem;font-family:var(--body);font-size:.8rem;font-weight:400}
+.hl-row{display:grid;grid-template-columns:9.5rem minmax(0,1fr) 3rem;align-items:center;gap:.6rem;height:1.55rem;font-size:.84rem}
+.hl-bar{height:.62rem;border-radius:3px;background:var(--sunken)}
+.hl-bar i{display:block;height:100%;border-radius:3px;background:#B9C8E8}
+.hl-row.ours{font-weight:700;color:var(--brand)}
+.hl-row.ours .hl-bar i{background:var(--brand)}
+.hl-val{font-variant-numeric:tabular-nums;text-align:right}
+@media (max-width:760px){.hl-grid{grid-template-columns:1fr;gap:1.5rem}.hl-row{grid-template-columns:8rem minmax(0,1fr) 2.8rem}}
 
 @media (hover:hover){
   .stage .stage-bar,.stage .stage-badge{opacity:0;transition:opacity .25s ease}
@@ -299,12 +305,14 @@ footer .meta{margin-top:.35rem;font-size:.82rem}
 /* Content configuration. An empty link keeps the button and shows "Coming soon" on hover. */
 const LINKS = {paper: '', arxiv: '', code: '', data: ''};
 
-const STATS = [
-  {value: '1,754', label: 'Planning instances'},
-  {value: '254', label: 'Rewriting cases'},
-  {value: '+12.3', label: 'Utility over info gain, two landmarks'},
-  {value: '+21.2', label: 'EX over LLM clarification, K = 3'}
-];
+/* Highlight charts: two-landmark subset, values from Table 2. */
+const HIGHLIGHT = {
+  title: 'Two-landmark requests, seven ambiguous slots',
+  panels: [
+    {name: 'Correct answers with three questions', metric: 'EX, K = 3', col: 3},
+    {name: 'Expected utility without a budget', metric: 'EX − 0.05 · #Q', col: 4}
+  ]
+};
 
 const STATS_TABLE = {
   note: 'Planning subsets of AmbiOverpass-Bench (1,754 requests), built from OverpassNL. Slots: ambiguous slots. Interpretations: non-empty candidate interpretations. Classes: result classes. Means per request.',
@@ -369,7 +377,16 @@ document.querySelectorAll('[data-link]').forEach(a => {
 });
 
 /* Key numbers */
-document.getElementById('stats').innerHTML = STATS.map(s => `<div class="stat"><b>${esc(s.value)}</b><span>${esc(s.label)}</span></div>`).join('');
+(function () {
+  const T = RESULTS[0], rows = [...T.rows.filter(r => r[0] !== 'No question'), T.ours];
+  document.getElementById('stats').innerHTML = `<p class="hl-title">${esc(HIGHLIGHT.title)}</p><div class="hl-grid">` + HIGHLIGHT.panels.map(p => {
+    const sorted = [...rows].sort((a, b) => b[p.col] - a[p.col]), max = sorted[0][p.col];
+    return `<div class="hl-panel"><p class="hl-name">${esc(p.name)}<span>${esc(p.metric)}</span></p>` + sorted.map(r => {
+      const ours = r === T.ours;
+      return `<div class="hl-row${ours ? ' ours' : ''}"><span class="hl-label">${esc(ours ? 'AmbiOverpass' : r[0])}</span><span class="hl-bar"><i style="width:${(r[p.col] / max * 100).toFixed(1)}%"></i></span><span class="hl-val">${r[p.col].toFixed(3)}</span></div>`;
+    }).join('') + '</div>';
+  }).join('') + '</div>';
+})();
 
 /* Benchmark statistics */
 document.getElementById('stats-table').innerHTML =
