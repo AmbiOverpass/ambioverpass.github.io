@@ -151,6 +151,15 @@ td.b{font-weight:700}
 .steps li::before{content:counter(st);position:absolute;left:0;top:.05rem;display:grid;place-items:center;width:1.8rem;height:1.8rem;border-radius:8px;background:var(--oat);color:var(--brand);font-family:var(--serif);font-weight:700}
 .steps b{display:block;font-family:var(--serif);font-size:1.05rem}
 .steps span{display:block;font-size:.95rem;line-height:1.6}
+.hl-row{grid-template-columns:11rem minmax(0,1fr) 3rem!important;height:1.75rem!important}
+.hl-label{display:flex;align-items:center;gap:.5rem;white-space:nowrap}
+.hl-icon{display:inline-grid;flex:none;place-items:center;width:1.3rem;height:1.3rem;border-radius:6px;background:color-mix(in srgb,var(--c) 13%,#fff);color:var(--c)}
+.hl-icon svg{width:.85rem;height:.85rem;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.hl-name{display:flex;align-items:center;flex-wrap:wrap}
+.hl-head{width:1.05rem;height:1.05rem;margin-right:.45rem;fill:none;stroke:var(--brand);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.hl-legend{display:flex;flex-wrap:wrap;justify-content:center;gap:.5rem 1.4rem;margin-top:1.3rem;padding-top:1rem;border-top:1px solid var(--warm-line);font-size:.8rem}
+.hl-legend span{display:inline-flex;align-items:center;gap:.4rem}
+@media (max-width:760px){.hl-row{grid-template-columns:9.5rem minmax(0,1fr) 2.8rem!important}}
 pre{margin:0;padding:1.25rem 1.5rem;overflow-x:auto;border-radius:var(--r-md);background:var(--sunken);border:1px solid var(--warm-line);font:400 .85rem/1.6 var(--mono);text-align:left}
 footer{padding:2.5rem 0 3rem;border-top:1px solid var(--warm-line);font-size:.9rem;text-align:center}
 footer .meta{margin-top:.35rem;font-size:.82rem}
@@ -190,7 +199,7 @@ footer .meta{margin-top:.35rem;font-size:.82rem}
 .hl-title{margin-bottom:1rem;font-family:var(--serif);font-size:1.05rem;font-weight:700;text-align:center}
 .hl-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2.5rem}
 .hl-name{margin-bottom:.6rem;font-family:var(--serif);font-size:.95rem;font-weight:700}
-.hl-name span{margin-left:.5rem;font-family:var(--body);font-size:.8rem;font-weight:400}
+.hl-name span{flex-basis:100%;margin:.15rem 0 0 1.5rem;font-family:var(--body);font-size:.8rem;font-weight:400}
 .hl-row{display:grid;grid-template-columns:9.5rem minmax(0,1fr) 3rem;align-items:center;gap:.6rem;height:1.55rem;font-size:.84rem}
 .hl-bar{height:.62rem;border-radius:3px;background:var(--sunken)}
 .hl-bar i{display:block;height:100%;border-radius:3px;background:#B9C8E8}
@@ -305,12 +314,23 @@ footer .meta{margin-top:.35rem;font-size:.82rem}
 /* Content configuration. An empty link keeps the button and shows "Coming soon" on hover. */
 const LINKS = {paper: '', arxiv: '', code: '', data: ''};
 
+/* Method families shown as icons in the highlight charts. */
+const FAMILY = {
+  ours:  {name: 'AmbiOverpass', color: '#2557C7', path: '<path d="M12 21s-6-5.6-6-10.5a6 6 0 0 1 12 0C18 15.4 12 21 12 21z"/><circle cx="12" cy="10.5" r="2.2"/>'},
+  order: {name: 'Fixed slot order', color: '#6B7280', path: '<path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1"/><circle cx="4.5" cy="12" r="1"/><circle cx="4.5" cy="18" r="1"/>'},
+  llm:   {name: 'LLM-based', color: '#8B5CF6', path: '<path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8z"/><path d="M18.5 15.5l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/>'},
+  search:{name: 'Tree search', color: '#0E9384', path: '<circle cx="12" cy="5" r="2"/><circle cx="6" cy="18" r="2"/><circle cx="18" cy="18" r="2"/><path d="M11 6.8L7 16.2M13 6.8l4 9.4"/>'},
+  info:  {name: 'Information gain', color: '#D97706', path: '<path d="M3 17l4-6 4 3 4-8 6 11"/>'},
+  topo:  {name: 'Result classes', color: '#2E90FA', path: '<rect x="4" y="4" width="6" height="6" rx="1.5"/><rect x="14" y="4" width="6" height="6" rx="1.5"/><rect x="9" y="14" width="6" height="6" rx="1.5"/><path d="M7 10v2h10v-2M12 12v2"/>'}
+};
+const METHOD_FAMILY = {'AmbiOverpass (ours)': 'ours', 'Ask all': 'order', 'Ask until agree': 'order', 'LLM planner': 'llm', 'ReAct agent': 'llm', 'Generic MCTS': 'search', 'Info gain on queries': 'info', 'Topology greedy': 'topo'};
+const familyIcon = f => `<span class="hl-icon" style="--c:${FAMILY[f].color}"><svg viewBox="0 0 24 24" aria-hidden="true">${FAMILY[f].path}</svg></span>`;
 /* Highlight charts: two-landmark subset, values from Table 2. */
 const HIGHLIGHT = {
   title: 'Two-landmark requests, seven ambiguous slots',
   panels: [
-    {name: 'Correct answers with three questions', metric: 'EX, K = 3', col: 3},
-    {name: 'Expected utility without a budget', metric: 'EX − 0.05 · #Q', col: 4}
+    {name: 'Accuracy', metric: 'share of requests answered correctly, at most 3 questions', col: 3, icon: '<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1"/>'},
+    {name: 'Accuracy minus question cost', metric: '0.05 per question, no question limit', col: 4, icon: '<path d="M12 4v16M5 20h14M6 8h12M6 8l-3 6a3 3 0 0 0 6 0zM18 8l-3 6a3 3 0 0 0 6 0z"/>'}
   ]
 };
 
@@ -381,11 +401,11 @@ document.querySelectorAll('[data-link]').forEach(a => {
   const T = RESULTS[0], rows = [...T.rows.filter(r => r[0] !== 'No question'), T.ours];
   document.getElementById('stats').innerHTML = `<p class="hl-title">${esc(HIGHLIGHT.title)}</p><div class="hl-grid">` + HIGHLIGHT.panels.map(p => {
     const sorted = [...rows].sort((a, b) => b[p.col] - a[p.col]), max = sorted[0][p.col];
-    return `<div class="hl-panel"><p class="hl-name">${esc(p.name)}<span>${esc(p.metric)}</span></p>` + sorted.map(r => {
+    return `<div class="hl-panel"><p class="hl-name"><svg class="hl-head" viewBox="0 0 24 24" aria-hidden="true">${p.icon}</svg>${esc(p.name)}<span>${esc(p.metric)}</span></p>` + sorted.map(r => {
       const ours = r === T.ours;
-      return `<div class="hl-row${ours ? ' ours' : ''}"><span class="hl-label">${esc(ours ? 'AmbiOverpass' : r[0])}</span><span class="hl-bar"><i style="width:${(r[p.col] / max * 100).toFixed(1)}%"></i></span><span class="hl-val">${r[p.col].toFixed(3)}</span></div>`;
+      return `<div class="hl-row${ours ? ' ours' : ''}"><span class="hl-label">${familyIcon(METHOD_FAMILY[r[0]])}${esc(ours ? 'AmbiOverpass' : r[0])}</span><span class="hl-bar"><i style="width:${(r[p.col] / max * 100).toFixed(1)}%"></i></span><span class="hl-val">${r[p.col].toFixed(3)}</span></div>`;
     }).join('') + '</div>';
-  }).join('') + '</div>';
+  }).join('') + '</div>' + `<div class="hl-legend">${['order', 'llm', 'search', 'info', 'topo', 'ours'].map(f => `<span>${familyIcon(f)}${esc(FAMILY[f].name)}</span>`).join('')}</div>`;
 })();
 
 /* Benchmark statistics */
