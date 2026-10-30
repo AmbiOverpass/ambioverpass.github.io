@@ -142,6 +142,7 @@ td.b{font-weight:700}
 .split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:2.5rem;align-items:center}
 .split h2{text-align:left!important}
 .split .figure{padding:1rem}
+#method .figure img{max-width:980px;margin-inline:auto}
 @media (max-width:860px){.split{grid-template-columns:1fr}}
 
 .lead{font-size:1.05rem;line-height:1.7;text-align:left}
@@ -232,6 +233,11 @@ footer .meta{margin-top:.35rem;font-size:.82rem}
   <div class="stats" id="stats"></div>
 </div></section>
 
+<section class="section" id="abstract" data-nav="Abstract"><div class="container">
+  <h2>Abstract</h2>
+  <p class="text">Text-to-OverpassQL lets users query OpenStreetMap in natural language, yet real requests often leave the area, the object tag, the element type or the spatial constraints unspecified, so one request maps to many executable queries. Many of these queries return empty or identical results, and the ambiguity that matters for the answer is much smaller than the ambiguity of the request text. Existing clarification methods value a question by the interpretations it separates and by its immediate benefit, which spends questions on distinctions with the same result and ends the dialogue before questions that are useful together are asked. To address this gap, we propose <b>AmbiOverpass</b>, an execution-aware clarification framework that executes all candidate queries with one shared database query per candidate area and landmark kind and merges queries with identical results into the result classes of an <i>ambiguity topology</i>. On this topology, exact Shapley values over the ambiguity slots credit each question with its share of the joint gain and define a rule for selecting a question and for stopping. A look-ahead planner then evaluates each action by the expected utility of its Shapley-greedy continuation, with a policy-improvement guarantee. On AmbiOverpass-Bench, with 1,754 planning instances and 254 rewriting cases, AmbiOverpass improves the expected utility on two-landmark requests by 6.5 points over one-step planning and by 12.3 points over information gain on queries, and with three questions it answers at least 21.2 points more requests correctly than consistency-based and LLM-based clarification.</p>
+</div></section>
+
 <section class="section" id="motivation" data-nav="Motivation"><div class="container">
   <div class="split">
     <figure><div class="figure"><div class="slot"><img src="assets/fig_motivation.png" alt="Clarification of an ambiguous Text-to-OverpassQL request"></div></div>
@@ -244,6 +250,12 @@ footer .meta{margin-top:.35rem;font-size:.82rem}
         <li><b>Ask by joint value</b><span>Exact Shapley values credit each question with its share of the joint gain, and a look-ahead planner decides what to ask and when to stop.</span></li>
       </ol></div>
   </div>
+</div></section>
+
+<section class="section" id="method" data-nav="Method"><div class="container">
+  <h2>Method</h2>
+  <div class="figure"><div class="slot"><img src="assets/fig_method.png" alt="Overview of AmbiOverpass"></div></div>
+  <p class="figure-caption"><span class="fig-no">Figure 2.</span> AmbiOverpass constructs the candidate interpretations, executes them with one superset query per area, merges identical results into result classes, values each slot by its Shapley value and plans questions with a one-step look-ahead until one result class remains.</p>
 </div></section>
 
 <section class="section" id="benchmark" data-nav="Benchmark"><div class="container">
@@ -387,7 +399,7 @@ chips(document.getElementById('results-chips'), RESULTS, T => {
 chips(document.getElementById('case-chips'), CASES, c => {
   const img = new Image(); img.src = c.src; img.alt = c.label;
   document.getElementById('case-figure').replaceChildren(img);
-  document.getElementById('case-caption').innerHTML = `<span class="fig-no">Figure 2.</span> ${esc(c.caption)}`;
+  document.getElementById('case-caption').innerHTML = `<span class="fig-no">Figure 3.</span> ${esc(c.caption)}`;
 });
 
 /* Efficiency */
