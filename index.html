@@ -461,13 +461,13 @@ details.abs p{margin-top:.8rem;font-size:.95rem;line-height:1.75;color:#33332F}
     <thead><tr><th></th><th class="grp" colspan="3">EX</th><th class="grp">Utility</th></tr>
     <tr><th>Configuration</th><th class="grp">K=1</th><th>K=2</th><th>K=3</th><th class="grp">None</th></tr></thead>
     <tbody>
+      <tr class="ours"><td><span>Full system</span></td><td class="grp b">0.268</td><td class="b">0.380</td><td class="b">0.529</td><td class="grp b">0.756</td></tr>
       <tr><td>w/o validity pruning</td><td class="grp">0.011</td><td>0.046</td><td>0.104</td><td class="grp">0.507</td></tr>
       <tr><td>w/o result classes</td><td class="grp">0.174</td><td>0.301</td><td>0.439</td><td class="grp">0.689</td></tr>
       <tr><td>w/o LLM prior</td><td class="grp">0.210</td><td>0.289</td><td>0.416</td><td class="grp">0.751</td></tr>
       <tr><td>w/o Shapley valuation</td><td class="grp">0.268</td><td>0.362</td><td>0.526</td><td class="grp">0.750</td></tr>
       <tr><td>w/o look-ahead</td><td class="grp">0.267</td><td>0.371</td><td>0.523</td><td class="grp">0.748</td></tr>
       <tr><td>w/o Shapley and look-ahead</td><td class="grp">0.245</td><td>0.335</td><td>0.472</td><td class="grp">0.691</td></tr>
-      <tr class="ours"><td><span>Full system</span></td><td class="grp b">0.268</td><td class="b">0.380</td><td class="b">0.529</td><td class="grp b">0.756</td></tr>
     </tbody></table></div>
   <p class="table-note"><span class="fig-no">Table 4.</span> Two-landmark subset (282 requests). Validity pruning and result classes matter most, as removing them costs 25.7&ndash;42.5 and 6.7&ndash;9.4 points. Shapley valuation and look-ahead each add at most 1.8 and 0.9 points on their own, yet removing both costs 4.5&ndash;6.5 points.</p>
 </div></section>
