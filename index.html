@@ -289,8 +289,7 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;ba
 .table-wrap.sheet{padding:.4rem 1rem}
 pre{background:#fff;border-color:#E6E8EC;box-shadow:var(--sheet-shadow)}
 footer{background:rgba(255,255,255,.7);border-top-color:#E6E8EC}
-.kicker{display:block;margin-bottom:.35rem;font:500 .8rem/1 var(--mono);letter-spacing:.04em;color:var(--brand);text-align:center}
-.split .kicker{text-align:left}
+.kicker{display:inline-block;margin-right:.7rem;font:500 .62em/1 var(--mono);letter-spacing:.04em;color:var(--brand);vertical-align:.3em}
 details.abs summary{cursor:pointer;list-style:none;margin-top:.9rem;font-size:.9rem;font-weight:500;color:var(--brand)}
 details.abs summary::-webkit-details-marker{display:none}
 details.abs summary::before{content:"+ ";font-family:var(--mono)}
@@ -367,8 +366,7 @@ details.abs p{margin-top:.8rem;font-size:.95rem;line-height:1.75;color:#33332F}
 </div></section>
 
 <section class="section" id="abstract" data-nav="Abstract"><div class="container">
-  <span class="kicker">01</span>
-  <h2>Abstract</h2>
+  <h2><span class="kicker">01</span>Abstract</h2>
   <div class="sheet">
   <ul class="abs-points">
     <li><b>Problem.</b> A vague map request yields many executable OverpassQL queries. Most of them, however, return empty or identical results, so clarification should follow what the queries return.</li>
@@ -384,7 +382,7 @@ details.abs p{margin-top:.8rem;font-size:.95rem;line-height:1.75;color:#33332F}
   <div class="split">
     <figure><div class="figure"><div class="slot"><img src="assets/fig_motivation.png" alt="Clarification of an ambiguous Text-to-OverpassQL request"></div></div>
     <p class="figure-caption"><span class="fig-no">Figure 1.</span> Guessing one query may miss the intended objects, and asking every ambiguity spends questions on readings with the same result. AmbiOverpass, by contrast, asks only to separate the 9 result classes among 32 candidates.</p></figure>
-    <div><span class="kicker">02</span><h2>Many Queries, Few Different Answers</h2>
+    <div><h2><span class="kicker">02</span>Many Queries, Few Different Answers</h2>
       <p class="lead">Although a vague request maps to many executable queries, most of them return empty or identical results. A useful question therefore separates different <b>results</b>, whereas a question that only separates query texts can leave the answer unchanged.</p>
       <ol class="steps">
         <li><b>Execute all candidates</b><span>One superset query per area and landmark kind replaces one query per candidate.</span></li>
@@ -395,8 +393,7 @@ details.abs p{margin-top:.8rem;font-size:.95rem;line-height:1.75;color:#33332F}
 </div></section>
 
 <section class="section" id="method" data-nav="Method"><div class="container">
-  <span class="kicker">03</span>
-  <h2>Method</h2>
+  <h2><span class="kicker">03</span>Method</h2>
   <div class="figure"><div class="slot pan"><img src="assets/fig_method.png" alt="Overview of AmbiOverpass"></div></div>
   <p class="pan-hint">Swipe to see the full figure</p>
   <p class="figure-caption"><span class="fig-no">Figure 2.</span> Given the request &ldquo;Places to power up my car in Bolivia?&rdquo;, AmbiOverpass builds 32 candidates and executes them with one superset query per area. The 13 non-empty readings then merge into 9 result classes, on which Shapley values and a one-step look-ahead plan the questions.</p>
@@ -404,8 +401,7 @@ details.abs p{margin-top:.8rem;font-size:.95rem;line-height:1.75;color:#33332F}
 </div></section>
 
 <section class="section" id="benchmark" data-nav="Benchmark"><div class="container">
-  <span class="kicker">04</span>
-  <h2>AmbiOverpass-Bench</h2>
+  <h2><span class="kicker">04</span>AmbiOverpass-Bench</h2>
   <div class="split">
     <figure><div class="figure"><div class="slot"><img src="assets/fig_benchmark_build.png" alt="Construction of one planning instance"></div></div>
     <p class="figure-caption"><span class="fig-no">Figure 3.</span> Building one planning instance. Of the 32 readings, 19 return nothing, and the remaining 13 merge into 9 result classes.</p></figure>
@@ -437,8 +433,7 @@ details.abs p{margin-top:.8rem;font-size:.95rem;line-height:1.75;color:#33332F}
 </div></section>
 
 <section class="section" id="results" data-nav="Results"><div class="container">
-  <span class="kicker">05</span>
-  <h2>Results</h2>
+  <h2><span class="kicker">05</span>Results</h2>
   <div class="chips" id="results-chips"></div>
   <div class="table-wrap sheet"><table id="bench"></table></div>
   <p class="table-note" id="bench-note"></p>
@@ -455,8 +450,7 @@ details.abs p{margin-top:.8rem;font-size:.95rem;line-height:1.75;color:#33332F}
 </div></section>
 
 <section class="section" id="ablation" data-nav="Ablation"><div class="container">
-  <span class="kicker">06</span>
-  <h2>Ablation</h2>
+  <h2><span class="kicker">06</span>Ablation</h2>
   <div class="table-wrap sheet"><table>
     <thead><tr><th></th><th class="grp" colspan="3">EX</th><th class="grp">Utility</th></tr>
     <tr><th>Configuration</th><th class="grp">K=1</th><th>K=2</th><th>K=3</th><th class="grp">None</th></tr></thead>
@@ -473,8 +467,7 @@ details.abs p{margin-top:.8rem;font-size:.95rem;line-height:1.75;color:#33332F}
 </div></section>
 
 <section class="section" id="generation" data-nav="Candidates"><div class="container">
-  <span class="kicker">07</span>
-  <h2>Candidate Generation</h2>
+  <h2><span class="kicker">07</span>Candidate Generation</h2>
   <div class="sheet cov">
     <div class="cov-row ours"><span>Rewrite operations + OSM-tag alignment</span><span class="cov-bar"><i style="width:67%"></i></span><span class="cov-val">67.0%</span></div>
     <div class="cov-row"><span>Repeated sampling</span><span class="cov-bar"><i style="width:58.2%"></i></span><span class="cov-val">58.2%</span></div>
@@ -488,16 +481,14 @@ details.abs p{margin-top:.8rem;font-size:.95rem;line-height:1.75;color:#33332F}
 </div></section>
 
 <section class="section" id="cases" data-nav="Case Study"><div class="container">
-  <span class="kicker">08</span>
-  <h2>Case Study</h2>
+  <h2><span class="kicker">08</span>Case Study</h2>
   <div class="figure"><div class="slot pan"><img src="assets/fig_case.png" alt="Clarification dialogue case"></div></div>
   <p class="pan-hint">Swipe to see the full figure</p>
   <p class="figure-caption"><span class="fig-no">Figure 6.</span> &ldquo;Fire hydrants near a park and close to a grocery store in Lons-le-Saunier&rdquo; with 98 result classes. EC&sup2;-Greedy stops at once, since no single question pays for its cost, and returns 185 hydrants. AmbiOverpass, by contrast, values questions jointly and reaches the 6 intended hydrants in five questions.</p>
 </div></section>
 
 <section class="section" id="efficiency" data-nav="Efficiency"><div class="container">
-  <span class="kicker">09</span>
-  <h2>Efficiency</h2>
+  <h2><span class="kicker">09</span>Efficiency</h2>
   <div class="split">
     <figure><div class="figure"><div class="slot"><img src="assets/fig_efficiency.png" alt="Efficiency of superset execution"></div></div>
     <p class="figure-caption"><span class="fig-no">Figure 7.</span> Superset execution versus one query per reading, without caching, on 15 single-object and 12 single-landmark requests.</p></figure>
