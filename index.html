@@ -327,7 +327,7 @@ details.abs p{margin-top:.8rem;font-size:.95rem;line-height:1.75;color:#33332F}
         <li style="--c:#93699A"><b>Grocery</b>tag &middot; 100 / 200 / 500 m</li>
         <li style="--c:#858B95"><b>Element type</b>point, line or area</li>
       </ul>
-      <p class="hl-sum"><b>220</b> readings &rarr; <b>98</b> distinct results</p>
+      <p class="hl-sum"><b>220</b> readings, yet only <b>98</b> distinct results</p>
     </aside>
     <div class="hl-mid" id="stats"></div>
     <aside class="hl-side">
@@ -341,7 +341,7 @@ details.abs p{margin-top:.8rem;font-size:.95rem;line-height:1.75;color:#33332F}
       </ol>
       <p class="hl-note">Results still possible after each answer (of 98).</p>
       <p class="hl-sum ok">&#10003; 6 intended hydrants in 5 questions</p>
-      <p class="hl-sum">Never asked: hydrant tag, element type.<br>Guessing instead: 185 hydrants, 179 wrong.</p>
+      <p class="hl-sum">Hydrant tag and element type are never asked, as they do not change the result. Guessing at once, by contrast, returns 185 hydrants, 179 of them wrong.</p>
     </aside>
   </div>
 </div></section>
@@ -351,10 +351,10 @@ details.abs p{margin-top:.8rem;font-size:.95rem;line-height:1.75;color:#33332F}
   <h2>Abstract</h2>
   <div class="sheet">
   <ul class="abs-points">
-    <li><b>Problem.</b> A vague map request yields many executable OverpassQL queries, yet most return empty or identical results.</li>
-    <li><b>Benchmark.</b> AmbiOverpass-Bench: 1,754 planning instances and 254 rewriting cases.</li>
-    <li><b>Method.</b> Superset execution groups readings into result classes; exact Shapley values and a look-ahead planner pick each question and when to stop.</li>
-    <li><b>Result.</b> On two-landmark requests, +12.3 utility over information gain, and at least +21.2 pp accuracy over consistency- and LLM-based clarification with three questions.</li>
+    <li><b>Problem.</b> A vague map request yields many executable OverpassQL queries. Most of them, however, return empty or identical results, so clarification should follow what the queries return.</li>
+    <li><b>Benchmark.</b> As no existing dataset supports this task, we build AmbiOverpass-Bench with 1,754 planning instances and 254 rewriting cases.</li>
+    <li><b>Method.</b> Superset execution evaluates the candidates together and groups readings with identical results into result classes. On these classes, exact Shapley values credit each slot with its share of the joint gain, while a look-ahead planner chooses the next question and when to stop.</li>
+    <li><b>Result.</b> The gains are largest on two-landmark requests. Without a question budget, AmbiOverpass improves utility by 12.3 points over information gain, and with three questions it further exceeds consistency- and LLM-based clarification by at least 21.2 points in accuracy.</li>
   </ul>
   <details class="abs"><summary>Full abstract</summary><p>Natural-language requests to OpenStreetMap often leave geographic areas, object tags, element types, landmarks, or radii unspecified, yielding multiple executable OverpassQL queries. Since many queries return empty or identical results, effective clarification depends on execution outcomes rather than textual ambiguity alone. We study execution-aware interactive clarification for Text-to-OverpassQL and construct <b>AmbiOverpass-Bench</b>, the first benchmark for this problem, comprising 1,754 planning instances and 254 rewriting cases. We find that existing clarification methods often select questions based on interpretation uncertainty or immediate gains, overlooking questions whose benefits emerge jointly. To address this limitation, we propose <b>AmbiOverpass</b>, an execution-aware framework that uses <i>superset execution</i> to efficiently evaluate candidate queries and groups execution-equivalent readings into result classes of an <i>ambiguity topology</i>. On this topology, exact Shapley values attribute joint clarification benefits to individual slots, while a look-ahead planner selects questions and determines when to stop, with a policy-improvement guarantee. Experiments show that superset execution reduces database requests from one per candidate query to one per candidate area and landmark kind. On two-landmark requests without a question budget, AmbiOverpass improves expected utility by 6.5 points over one-step planning and 12.3 points over information gain over readings. Under a three-question budget, it improves execution accuracy by at least 21.2 percentage points over consistency-based and LLM-based clarification.</p></details>
   </div>
@@ -363,13 +363,13 @@ details.abs p{margin-top:.8rem;font-size:.95rem;line-height:1.75;color:#33332F}
 <section class="section" id="motivation" data-nav="Motivation"><div class="container">
   <div class="split">
     <figure><div class="figure"><div class="slot"><img src="assets/fig_motivation.png" alt="Clarification of an ambiguous Text-to-OverpassQL request"></div></div>
-    <p class="figure-caption"><span class="fig-no">Figure 1.</span> Guess once, ask everything, or AmbiOverpass. 32 candidates, 13 non-empty, 9 result classes.</p></figure>
+    <p class="figure-caption"><span class="fig-no">Figure 1.</span> Guessing one query may miss the intended objects, and asking every ambiguity spends questions on readings with the same result. AmbiOverpass, by contrast, asks only to separate the 9 result classes among 32 candidates.</p></figure>
     <div><span class="kicker">02</span><h2>Many Queries, Few Different Answers</h2>
-      <p class="lead">Most candidate queries return empty or identical results, so questions should separate <b>results</b>, not query texts.</p>
+      <p class="lead">Although a vague request maps to many executable queries, most of them return empty or identical results. A useful question therefore separates different <b>results</b>, whereas a question that only separates query texts can leave the answer unchanged.</p>
       <ol class="steps">
-        <li><b>Execute all candidates</b><span>One superset query per area and landmark kind.</span></li>
-        <li><b>Merge identical results</b><span>Same result, same class: the ambiguity topology.</span></li>
-        <li><b>Ask by joint value</b><span>Shapley values plus look-ahead decide what to ask and when to stop.</span></li>
+        <li><b>Execute all candidates</b><span>One superset query per area and landmark kind replaces one query per candidate.</span></li>
+        <li><b>Merge identical results</b><span>Readings with the same result fall into one class, so the planner only needs to separate classes.</span></li>
+        <li><b>Ask by joint value</b><span>Since a question may pay off only together with others, Shapley values share out the joint gain, and a look-ahead planner then decides what to ask and when to stop.</span></li>
       </ol></div>
   </div>
 </div></section>
@@ -379,7 +379,7 @@ details.abs p{margin-top:.8rem;font-size:.95rem;line-height:1.75;color:#33332F}
   <h2>Method</h2>
   <div class="figure"><div class="slot pan"><img src="assets/fig_method.png" alt="Overview of AmbiOverpass"></div></div>
   <p class="pan-hint">Swipe to see the full figure</p>
-  <p class="figure-caption"><span class="fig-no">Figure 2.</span> &ldquo;Places to power up my car in Bolivia?&rdquo; 32 candidates &rarr; one superset query per area &rarr; 9 result classes &rarr; Shapley value per slot &rarr; one-step look-ahead.</p>
+  <p class="figure-caption"><span class="fig-no">Figure 2.</span> Given the request &ldquo;Places to power up my car in Bolivia?&rdquo;, AmbiOverpass builds 32 candidates and executes them with one superset query per area. The 13 non-empty readings then merge into 9 result classes, on which Shapley values and a one-step look-ahead plan the questions.</p>
 </div></section>
 
 <section class="section" id="benchmark" data-nav="Benchmark"><div class="container">
