@@ -41,7 +41,7 @@ button{font:inherit;color:inherit}
 [hidden]{display:none!important}
 :focus-visible{outline:2px solid var(--brand);outline-offset:2px;border-radius:4px}
 
-.container{width:100%;max-width:1040px;margin-inline:auto;padding-inline:1.5rem}
+.container{width:100%;max-width:1200px;margin-inline:auto;padding-inline:1.5rem}
 
 /* Header */
 .hero{padding:5.5rem 0 2.5rem;text-align:center}
@@ -147,7 +147,7 @@ td.b{font-weight:700}
 .split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:2.5rem;align-items:center}
 .split h2{text-align:left!important}
 .split .figure{padding:1rem}
-#method .figure img{max-width:960px;margin-inline:auto}
+#method .figure img{max-width:1080px;margin-inline:auto}
 @media (max-width:860px){.split{grid-template-columns:1fr}}
 
 .lead{font-size:1.05rem;line-height:1.7;text-align:left}
@@ -163,7 +163,7 @@ td.b{font-weight:700}
 .hl-name{display:flex;align-items:center;flex-wrap:wrap}
 .hl-head{width:1.05rem;height:1.05rem;margin-right:.45rem;fill:none;stroke:var(--brand);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 @media (max-width:760px){.hl-row{grid-template-columns:9.5rem minmax(0,1fr) 2.8rem!important}}
-.stats.hl-wrap{max-width:none;display:grid;grid-template-columns:15rem minmax(0,1fr) 15rem;gap:1.5rem;max-width:none;padding:1.5rem 1.6rem}
+.stats.hl-wrap{max-width:none;display:grid;grid-template-columns:16.5rem minmax(0,1fr) 16.5rem;gap:1.8rem;max-width:none;padding:1.5rem 1.6rem}
 .hl-mid .hl-grid{grid-template-columns:1fr;gap:1.4rem}
 .hl-mid{padding:0 1.3rem;border-left:1px solid var(--warm-line);border-right:1px solid var(--warm-line)}
 .hl-side-title{margin-bottom:.8rem;font-family:var(--serif);font-size:1.05rem;font-weight:700}
@@ -299,6 +299,24 @@ details.abs p{margin-top:.8rem;font-size:.95rem;line-height:1.75;color:#33332F}
 .abs-points{margin:0;padding:0;list-style:none;display:grid;gap:.6rem}
 .abs-points li{position:relative;padding-left:1.3rem;font-size:1rem;line-height:1.6}
 .abs-points li::before{content:"";position:absolute;left:.2rem;top:.62em;width:6px;height:6px;border-radius:2px;background:var(--brand)}
+
+.note-card{max-width:860px;margin:1.4rem auto 0;padding:.9rem 1.2rem;border:1px solid #E6E8EC;border-left:3px solid var(--brand);border-radius:10px;background:#fff;box-shadow:var(--sheet-shadow);font-size:.95rem;line-height:1.65}
+.note-card b{color:var(--brand)}
+.sub{margin:2.6rem 0 1rem;font-family:var(--serif);font-size:1.25rem;font-weight:700;text-align:center}
+.points{margin:0;padding:0;list-style:none;display:grid;gap:.9rem}
+.points li{position:relative;padding-left:1.3rem;font-size:.97rem;line-height:1.65}
+.points li::before{content:"";position:absolute;left:.15rem;top:.62em;width:6px;height:6px;border-radius:2px;background:var(--brand)}
+.yes{color:var(--brand);font-weight:700}
+#cmp td,#cmp th{font-size:.86rem;padding:.5rem .55rem}
+#cmp tr.ours td{background:#EEF3FD;font-weight:700}
+.cov{display:grid;gap:.7rem}
+.cov-row{display:grid;grid-template-columns:18.5rem minmax(0,1fr) 3.4rem;align-items:center;gap:.8rem;font-size:.92rem}
+.cov-bar{height:.75rem;border-radius:3px;background:var(--sunken)}
+.cov-bar i{display:block;height:100%;border-radius:3px;background:#B9C8E8}
+.cov-row.ours{font-weight:700;color:var(--brand)}
+.cov-row.ours .cov-bar i{background:var(--brand)}
+.cov-val{text-align:right;font-variant-numeric:tabular-nums}
+@media (max-width:600px){.cov-row{grid-template-columns:8.5rem minmax(0,1fr) 3rem;font-size:.8rem}}
 </style>
 </head>
 
@@ -382,13 +400,40 @@ details.abs p{margin-top:.8rem;font-size:.95rem;line-height:1.75;color:#33332F}
   <div class="figure"><div class="slot pan"><img src="assets/fig_method.png" alt="Overview of AmbiOverpass"></div></div>
   <p class="pan-hint">Swipe to see the full figure</p>
   <p class="figure-caption"><span class="fig-no">Figure 2.</span> Given the request &ldquo;Places to power up my car in Bolivia?&rdquo;, AmbiOverpass builds 32 candidates and executes them with one superset query per area. The 13 non-empty readings then merge into 9 result classes, on which Shapley values and a one-step look-ahead plan the questions.</p>
+  <p class="note-card"><b>Policy-improvement guarantee.</b> Since the look-ahead planner can always fall back on the action of Shapley greedy, its expected utility is never lower than that of Shapley greedy under the same prior, answer model and question budget.</p>
 </div></section>
 
 <section class="section" id="benchmark" data-nav="Benchmark"><div class="container">
   <span class="kicker">04</span>
   <h2>AmbiOverpass-Bench</h2>
+  <div class="split">
+    <figure><div class="figure"><div class="slot"><img src="assets/fig_benchmark_build.png" alt="Construction of one planning instance"></div></div>
+    <p class="figure-caption"><span class="fig-no">Figure 3.</span> Building one planning instance. Of the 32 readings, 19 return nothing, and the remaining 13 merge into 9 result classes.</p></figure>
+    <ol class="steps">
+      <li><b>Weaken</b><span>Starting from an executable OverpassNL query, Qwen3-14B weakens selected descriptions, so the request now admits several readings.</span></li>
+      <li><b>Enumerate</b><span>Combining candidate areas, tags and element types gives 4 &times; 2 &times; 4 = 32 readings.</span></li>
+      <li><b>Execute</b><span>Each reading runs on a fixed OSM snapshot, and readings with empty results are dropped.</span></li>
+      <li><b>Group</b><span>Readings that return the same objects share a result class, which provides result-level labels for evaluation.</span></li>
+    </ol>
+  </div>
+  <h3 class="sub">Composition</h3>
   <div class="table-wrap sheet"><table id="stats-table"></table></div>
   <p class="table-note" id="stats-note"></p>
+  <h3 class="sub">Compared with related benchmarks</h3>
+  <div class="table-wrap sheet"><table id="cmp">
+    <thead><tr><th>Dataset</th><th>Size</th><th>Types</th><th>Language</th><th>Candidates</th><th>Intent labels</th><th>Result classes</th><th>Spatial</th><th>Budgeted planning</th></tr></thead>
+    <tbody>
+      <tr><td>OverpassNL</td><td>8,352</td><td>&ndash;</td><td>OverpassQL</td><td>Single reference</td><td>Reference query</td><td>NR</td><td class="yes">Yes</td><td>&ndash;</td></tr>
+      <tr><td>AmbiQT</td><td>3,046</td><td>4</td><td>SQL</td><td>Two SQL readings</td><td>Valid SQL targets</td><td>NR</td><td>&ndash;</td><td>&ndash;</td></tr>
+      <tr><td>AMBROSIA</td><td>1,277</td><td>3</td><td>SQL</td><td>Multiple SQLs</td><td>NL interpretations</td><td>NR</td><td>&ndash;</td><td>&ndash;</td></tr>
+      <tr><td>Sphinteract study</td><td>64</td><td>4</td><td>SQL</td><td>Expert SQLs</td><td>Expert interpretations</td><td>NR</td><td>&ndash;</td><td class="yes">Yes</td></tr>
+      <tr><td>CLAMBSQL</td><td>&ndash;</td><td>7</td><td>SQL</td><td>SQLs and mappings</td><td>Clarification feedback</td><td>NR</td><td>&ndash;</td><td>&ndash;</td></tr>
+      <tr><td>TACO</td><td>~14,500</td><td>&ndash;</td><td>SQL</td><td>Reference SQL</td><td>Gold SQL</td><td>NR</td><td>&ndash;</td><td>&ndash;</td></tr>
+      <tr><td>BIRD-Interact</td><td>600</td><td>&ndash;</td><td>SQL</td><td>Dynamic tasks</td><td>Simulated feedback</td><td>NR</td><td>&ndash;</td><td class="yes">Yes</td></tr>
+      <tr><td>ARCS</td><td>311</td><td>&ndash;</td><td>SQL</td><td>SQL alternatives</td><td>Intended choices</td><td>NR</td><td>&ndash;</td><td>&ndash;</td></tr>
+      <tr class="ours"><td>AmbiOverpass-Bench</td><td>2,008</td><td>6</td><td>OverpassQL</td><td>Slot combinations</td><td>Ground-truth slots</td><td class="yes">Yes</td><td class="yes">Yes</td><td class="yes">Yes</td></tr>
+    </tbody></table></div>
+  <p class="table-note"><span class="fig-no">Table 2.</span> Existing benchmarks evaluate against reference queries or alternative interpretations, whereas none of them labels execution-equivalent result classes. Types: dataset-specific ambiguity categories. NR: result classes not provided as annotations. Size of ours: 1,754 planning instances plus 254 rewriting cases.</p>
 </div></section>
 
 <section class="section" id="results" data-nav="Results"><div class="container">
@@ -397,22 +442,71 @@ details.abs p{margin-top:.8rem;font-size:.95rem;line-height:1.75;color:#33332F}
   <div class="chips" id="results-chips"></div>
   <div class="table-wrap sheet"><table id="bench"></table></div>
   <p class="table-note" id="bench-note"></p>
+  <h3 class="sub">Where the gains come from</h3>
+  <div class="split">
+    <figure><div class="figure narrow"><div class="slot"><img src="assets/fig_criteria_gain.png" alt="Gains over EC2 on two-landmark requests"></div></div>
+    <p class="figure-caption"><span class="fig-no">Figure 4.</span> Gain over EC&sup2; with one-step stopping on two-landmark requests, with the topology, prior and user answers fixed.</p></figure>
+    <ul class="points">
+      <li>The advantage grows with ambiguity. On single-object requests at K = 2, AmbiOverpass and EC&sup2;-Greedy are nearly tied (0.881 vs. 0.880). On two-landmark requests at K = 3, by contrast, the gain rises from 3.2 points for requests with at most five slots to 7.0 points for those with six or seven slots.</li>
+      <li>Greedy planning mostly fails by stopping too early. Under a uniform prior, 95% of its utility loss on two-landmark requests occurs in states where it stops prematurely.</li>
+      <li>As a result, the gain over EC&sup2;-Greedy increases from 2.3 points at K = 1 to 6.5 points without a budget, which also exceeds information gain by 5.5 points.</li>
+    </ul>
+  </div>
+</div></section>
+
+<section class="section" id="ablation" data-nav="Ablation"><div class="container">
+  <span class="kicker">06</span>
+  <h2>Ablation</h2>
+  <div class="table-wrap sheet"><table>
+    <thead><tr><th></th><th class="grp" colspan="3">EX</th><th class="grp">Utility</th></tr>
+    <tr><th>Configuration</th><th class="grp">K=1</th><th>K=2</th><th>K=3</th><th class="grp">None</th></tr></thead>
+    <tbody>
+      <tr><td>w/o validity pruning</td><td class="grp">0.011</td><td>0.046</td><td>0.104</td><td class="grp">0.507</td></tr>
+      <tr><td>w/o result classes</td><td class="grp">0.174</td><td>0.301</td><td>0.439</td><td class="grp">0.689</td></tr>
+      <tr><td>w/o LLM prior</td><td class="grp">0.210</td><td>0.289</td><td>0.416</td><td class="grp">0.751</td></tr>
+      <tr><td>w/o Shapley valuation</td><td class="grp">0.268</td><td>0.362</td><td>0.526</td><td class="grp">0.750</td></tr>
+      <tr><td>w/o look-ahead</td><td class="grp">0.267</td><td>0.371</td><td>0.523</td><td class="grp">0.748</td></tr>
+      <tr><td>w/o Shapley and look-ahead</td><td class="grp">0.245</td><td>0.335</td><td>0.472</td><td class="grp">0.691</td></tr>
+      <tr class="ours"><td><span>Full system</span></td><td class="grp b">0.268</td><td class="b">0.380</td><td class="b">0.529</td><td class="grp b">0.756</td></tr>
+    </tbody></table></div>
+  <p class="table-note"><span class="fig-no">Table 4.</span> Two-landmark subset (282 requests). Validity pruning and result classes matter most, as removing them costs 25.7&ndash;42.5 and 6.7&ndash;9.4 points. Shapley valuation and look-ahead each add at most 1.8 and 0.9 points on their own, yet removing both costs 4.5&ndash;6.5 points.</p>
+</div></section>
+
+<section class="section" id="generation" data-nav="Candidates"><div class="container">
+  <span class="kicker">07</span>
+  <h2>Candidate Generation</h2>
+  <div class="sheet cov">
+    <div class="cov-row ours"><span>Rewrite operations + OSM-tag alignment</span><span class="cov-bar"><i style="width:67%"></i></span><span class="cov-val">67.0%</span></div>
+    <div class="cov-row"><span>Repeated sampling</span><span class="cov-bar"><i style="width:58.2%"></i></span><span class="cov-val">58.2%</span></div>
+    <div class="cov-row"><span>Paraphrasing</span><span class="cov-bar"><i style="width:57.5%"></i></span><span class="cov-val">57.5%</span></div>
+    <div class="cov-row"><span>One LLM call listing 50 tags</span><span class="cov-bar"><i style="width:50.5%"></i></span><span class="cov-val">50.5%</span></div>
+  </div>
+  <p class="table-note">Gold-tag coverage on 273 syntax-valid rewriting requests. Repeated sampling and paraphrasing use the same LLM-call budget as rewriting, yet still trail it by about nine points. Tag statistics further remove the 35&ndash;46% of directly generated tags that no OSM object carries.</p>
+  <div class="figure" style="margin-top:1.6rem"><div class="slot pan"><img src="assets/fig_rewrite_case.png" alt="Candidate generation case"></div></div>
+  <p class="pan-hint">Swipe to see the full figure</p>
+  <p class="figure-caption"><span class="fig-no">Figure 5.</span> &ldquo;What five-star health stores are located in Italy?&rdquo; Asked for 50 tags, one LLM call returns 47, of which 20 are carried by no OSM object, yet it misses amenity=pharmacy. The rewrite operations instead drop &ldquo;five-star&rdquo;, map &ldquo;health stores&rdquo; to four OSM object types and align each to ten tags.</p>
 </div></section>
 
 <section class="section" id="cases" data-nav="Case Study"><div class="container">
-  <span class="kicker">06</span>
+  <span class="kicker">08</span>
   <h2>Case Study</h2>
-  <div class="chips" id="case-chips"></div>
-  <div class="figure"><div class="slot pan" id="case-figure"></div></div>
+  <div class="figure"><div class="slot pan"><img src="assets/fig_case.png" alt="Clarification dialogue case"></div></div>
   <p class="pan-hint">Swipe to see the full figure</p>
-  <p class="figure-caption" id="case-caption"></p>
+  <p class="figure-caption"><span class="fig-no">Figure 6.</span> &ldquo;Fire hydrants near a park and close to a grocery store in Lons-le-Saunier&rdquo; with 98 result classes. EC&sup2;-Greedy stops at once, since no single question pays for its cost, and returns 185 hydrants. AmbiOverpass, by contrast, values questions jointly and reaches the 6 intended hydrants in five questions.</p>
 </div></section>
 
 <section class="section" id="efficiency" data-nav="Efficiency"><div class="container">
-  <span class="kicker">07</span>
+  <span class="kicker">09</span>
   <h2>Efficiency</h2>
-  <div class="table-wrap sheet"><table id="cost"></table></div>
-  <p class="table-note" id="cost-note"></p>
+  <div class="split">
+    <figure><div class="figure"><div class="slot"><img src="assets/fig_efficiency.png" alt="Efficiency of superset execution"></div></div>
+    <p class="figure-caption"><span class="fig-no">Figure 7.</span> Superset execution versus one query per reading, without caching, on 15 single-object and 12 single-landmark requests.</p></figure>
+    <ul class="points">
+      <li>Superset execution cuts Overpass calls from 222.0 to 2.9 per single-landmark request, and the estimated time accordingly drops from 6,787 s to 96 s.</li>
+      <li>These savings arise because shared supersets are retrieved once and candidate results are rebuilt locally.</li>
+      <li>Planning stays light as well. Including exact Shapley computation, it takes 0.8 ms per single-object request and 37&ndash;60 ms per two-landmark request, since memoization compresses 642,607 question-history nodes into 1,962 distinct states.</li>
+    </ul>
+  </div>
 </div></section>
 
 <section class="section" id="bibtex" data-nav="BibTeX"><div class="container">
@@ -475,18 +569,7 @@ const RESULTS = [
    ours: ['AmbiOverpass (ours)', .687, .881, 1.58]}
 ];
 
-const CASES = [
-  {label: 'Clarification dialogue', src: 'assets/fig_case.png',
-   caption: 'A two-landmark request with 98 result classes: EC²-Greedy, Sphinteract and AmbiOverpass.'},
-  {label: 'Candidate generation', src: 'assets/fig_rewrite_case.png',
-   caption: 'One-shot tag listing vs. AmbiOverpass rewrites. Struck out: tags no OSM object carries.'}
-];
 
-const COST = {
-  note: 'Per request, public Overpass mirror. Superset: ours. Single: one query per interpretation.',
-  groups: [['Single object', 2], ['Single landmark', 2]], columns: ['Superset', 'Single', 'Superset', 'Single'],
-  rows: [['Queries', '1.5', '16.1', '2.9', '222.0'], ['Time per query (s)', '41', '32', '33', '31'], ['Total time (s)', '61', '514', '96', '6,787']]
-};
 
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c]));
 
@@ -545,25 +628,10 @@ chips(document.getElementById('results-chips'), RESULTS, T => {
     '<thead><tr><th></th>' + T.groups.map(([g, n]) => `<th class="grp" colspan="${n}">${esc(g)}</th>`).join('') + '</tr>' +
     '<tr><th>Method</th>' + T.columns.map((c, j) => `<th${starts.has(j) ? ' class="grp"' : ''}>${esc(c)}</th>`).join('') + '</tr></thead>' +
     '<tbody>' + T.rows.map(r => tr(r, false)).join('') + tr(T.ours, true) + '</tbody>';
-  document.getElementById('bench-note').innerHTML = `<span class="fig-no">Table 2.</span> ${esc(T.note)} Bold: best.`;
+  document.getElementById('bench-note').innerHTML = `<span class="fig-no">Table 3.</span> ${esc(T.note)} Bold: best.`;
 });
 
-/* Case study */
-chips(document.getElementById('case-chips'), CASES, c => {
-  const img = new Image(); img.src = c.src; img.alt = c.label;
-  document.getElementById('case-figure').replaceChildren(img);
-  document.getElementById('case-caption').innerHTML = `<span class="fig-no">Figure 3.</span> ${esc(c.caption)}`;
-});
 
-/* Efficiency */
-(function () {
-  const starts = new Set([0, 2]);
-  document.getElementById('cost').innerHTML =
-    '<thead><tr><th></th>' + COST.groups.map(([g, n]) => `<th class="grp" colspan="${n}">${esc(g)}</th>`).join('') + '</tr>' +
-    '<tr><th></th>' + COST.columns.map((c, j) => `<th${starts.has(j) ? ' class="grp"' : ''}>${esc(c)}</th>`).join('') + '</tr></thead><tbody>' +
-    COST.rows.map(r => `<tr><td>${esc(r[0])}</td>` + r.slice(1).map((v, j) => `<td${starts.has(j) ? ' class="grp"' : ''}>${esc(v)}</td>`).join('') + '</tr>').join('') + '</tbody>';
-  document.getElementById('cost-note').innerHTML = `<span class="fig-no">Table 3.</span> ${esc(COST.note)}`;
-})();
 
 /* Reading position rail */
 (function () {
