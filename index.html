@@ -441,7 +441,7 @@ const METHOD_FAMILY = {'AmbiOverpass (ours)': 'ours', 'Sphinteract': 'order', 'C
 const familyIcon = f => `<span class="hl-icon" style="--c:${FAMILY[f].color}"><svg viewBox="0 0 24 24" aria-hidden="true">${FAMILY[f].path}</svg></span>`;
 /* Highlight charts: two-landmark subset, values from Table 2. */
 const HIGHLIGHT = {
-  title: 'Two-landmark requests, seven ambiguous slots',
+  title: 'Results on 435 requests with two landmarks',
   panels: [
     {name: 'Accuracy', metric: 'share of requests answered correctly, at most 3 questions', col: 3, icon: '<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1"/>'},
     {name: 'Accuracy minus question cost', metric: '0.05 per question, no question limit', col: 4, icon: '<path d="M12 4v16M5 20h14M6 8h12M6 8l-3 6a3 3 0 0 0 6 0zM18 8l-3 6a3 3 0 0 0 6 0z"/>'}
